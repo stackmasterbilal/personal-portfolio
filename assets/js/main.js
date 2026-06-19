@@ -1,19 +1,9 @@
-/* ================================================================
-   MUHAMMAD BILAL RAZA — PORTFOLIO MAIN JS
-   Includes: Nav, Theme, Typed.js, 3D Sphere, Scroll Animations,
-             Parallax, Filter, Form Validation
-   ================================================================ */
+
 
 'use strict';
 
-/* ----------------------------------------------------------------
-   UTILITY: Wait for DOM
-   ---------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ==============================================================
-     1. TYPED.JS — Hero Typing Animation
-     ============================================================== */
   if (typeof Typed !== 'undefined') {
     new Typed('#typed-el', {
       strings: [
@@ -32,22 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ==============================================================
-     2. NAVBAR — Scroll + Active Link
-     ============================================================== */
   const navbar   = document.getElementById('navbar');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
 
   const onScroll = () => {
-    /* Frosted glass trigger */
+ 
     navbar.classList.toggle('scrolled', window.scrollY > 24);
 
-    /* Scroll-to-top button */
+
     document.getElementById('scroll-top')
       .classList.toggle('show', window.scrollY > 500);
 
-    /* Active nav link */
+
     let current = '';
     sections.forEach(sec => {
       if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
@@ -58,11 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // run once on load
+  onScroll(); 
 
-  /* ==============================================================
-     3. HAMBURGER / MOBILE NAV
-     ============================================================== */
+
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobile-nav');
 
@@ -78,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* Close mobile nav on outside click */
   document.addEventListener('click', e => {
     if (!navbar.contains(e.target) && !mobileNav.contains(e.target)) {
       hamburger.classList.remove('open');
@@ -86,12 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ==============================================================
-     4. DARK / LIGHT THEME TOGGLE
-     ============================================================== */
   const themeBtn = document.getElementById('theme-toggle');
   const html     = document.documentElement;
-  let dark = localStorage.getItem('mbr-theme') !== 'light';
+  let dark = localStorage.getItem('mbr-theme') == 'light';
 
   const applyTheme = () => {
     html.setAttribute('data-theme', dark ? 'dark' : 'light');
@@ -107,9 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme();
   });
 
-  /* ==============================================================
-     5. INTERSECTION OBSERVER — Scroll Reveal Animations
-     ============================================================== */
   const revealEls = document.querySelectorAll(
     '.reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-scale'
   );
@@ -124,9 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealEls.forEach(el => revealObs.observe(el));
 
-  /* ==============================================================
-     6. SMOOTH SCROLL
-     ============================================================== */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
@@ -140,14 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* Scroll-to-top */
   document.getElementById('scroll-top').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ==============================================================
-     7. HERO PARALLAX — Mouse Move Orbs
-     ============================================================== */
   const orbs = document.querySelectorAll('.orb');
   document.addEventListener('mousemove', e => {
     const cx = window.innerWidth  / 2;
@@ -160,10 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { passive: true });
 
-  /* ==============================================================
-     8. 3D TAG SPHERE
-     Purpose: Rotating 3D sphere of tech skills using DOM + CSS transforms
-     ============================================================== */
   const TECH_TAGS = [
     'ASP.NET Core', 'C#', 'Web API', 'MVC', '.NET', 'Angular', 'TypeScript',
     'RxJS', 'HTML5', 'CSS3', 'Bootstrap', 'JavaScript', 'SQL Server', 'T-SQL',
@@ -178,16 +145,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const R    = sphereEl.offsetWidth  / 2 || 240;
   const tags = [];
 
-  /* Colour variants that match the theme */
+
   const COLORS = [
     { bg: 'rgba(124,58,237,0.18)',  border: 'rgba(124,58,237,0.35)',  color: '#9F67FF' },
     { bg: 'rgba(6,182,212,0.14)',   border: 'rgba(6,182,212,0.35)',   color: '#22D3EE' },
     { bg: 'rgba(16,185,129,0.14)',  border: 'rgba(16,185,129,0.35)',  color: '#10B981' },
   ];
 
-  /* Fibonacci sphere point distribution */
   const n   = TECH_TAGS.length;
-  const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle
+  const phi = Math.PI * (3 - Math.sqrt(5)); 
 
   TECH_TAGS.forEach((text, i) => {
     const y     = 1 - (i / (n - 1)) * 2;
@@ -221,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastMouseX = 0;
   let lastMouseY = 0;
 
-  /* Rotation matrix helpers */
   function rotateX(p, a) {
     const cos = Math.cos(a), sin = Math.sin(a);
     return { x: p.x, y: p.y * cos - p.z * sin, z: p.y * sin + p.z * cos };
@@ -231,10 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return { x: p.x * cos + p.z * sin, y: p.y, z: -p.x * sin + p.z * cos };
   }
 
-  /* Render loop */
   let frame;
   function render() {
-    /* Apply auto-rotation or drag */
+
     tags.forEach(t => {
       let p = { x: t.x, y: t.y, z: t.z };
       p = rotateX(p, dragging ? mouseY * 0.004 : rotX);
@@ -244,11 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (dragging) { mouseX = 0; mouseY = 0; }
 
-    /* Project + scale each tag */
     tags.forEach(t => {
-      const scale  = (t.z + R) / (2 * R); // 0.5 → 1
+      const scale  = (t.z + R) / (2 * R); 
       const alpha  = 0.3 + scale * 0.7;
-      const fsize  = 11 + scale * 3;       // 11px → 14px
+      const fsize  = 11 + scale * 3;       
 
       t.el.style.transform = `
         translate(-50%, -50%)
@@ -265,13 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   render();
 
-  /* Pause auto-rotation on hover */
   sphereEl.addEventListener('mouseenter', () => { rotX = 0; rotY = 0; });
   sphereEl.addEventListener('mouseleave', () => {
     if (!dragging) { rotX = 0.003; rotY = 0.006; }
   });
 
-  /* Drag to rotate */
   sphereEl.addEventListener('mousedown', e => {
     dragging   = true;
     lastMouseX = e.clientX;
@@ -290,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     rotY = 0.006;
   });
 
-  /* Touch support */
   let lastTX = 0, lastTY = 0;
   sphereEl.addEventListener('touchstart', e => {
     lastTX = e.touches[0].clientX;
@@ -308,9 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     lastTY = e.touches[0].clientY;
   }, { passive: true });
 
-  /* ==============================================================
-     9. PROJECT FILTER TABS
-     ============================================================== */
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projCards  = document.querySelectorAll('.proj-card[data-cat]');
 
@@ -336,9 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ==============================================================
-     10. CONTACT FORM — Validation & Submit
-     ============================================================== */
   const form = document.getElementById('contact-form');
   if (!form) return;
 
@@ -378,7 +332,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMsg = document.getElementById('form-success');
     const errorMsg   = document.getElementById('form-error');
 
-    // Hide any previous messages
     successMsg.classList.remove('show');
     errorMsg.classList.remove('show');
 
@@ -415,16 +368,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* Clear error on input */
   ['f-name','f-email','f-subject','f-message'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', function () {
       this.closest('.form-group')?.classList.remove('has-error');
     });
   });
 
-  /* ==============================================================
-     11. STATS COUNTER ANIMATION
-     ============================================================== */
   const counters = document.querySelectorAll('[data-count]');
   const countObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -437,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const tick = now => {
         const t   = Math.min((now - start) / dur, 1);
         const val = t < 1
-          ? end * (1 - Math.pow(1 - t, 3))   // ease-out cubic
+          ? end * (1 - Math.pow(1 - t, 3))   
           : end;
         el.textContent = Number.isInteger(end)
           ? Math.round(val).toString()
@@ -451,4 +400,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   counters.forEach(el => countObs.observe(el));
 
-}); /* end DOMContentLoaded */
+}); 
